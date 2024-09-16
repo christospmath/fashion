@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Images</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Upload Images</h1>
+    <form id="upload-form" method="post" enctype="multipart/form-data">
+        <p>
+            <label for="selfie">Selfie:</label>
+            <input type="file" name="selfie" id="selfie" accept="image/*" required>
+        </p>
+        <p>
+            <label for="clothing">Clothing:</label>
+            <input type="file" name="clothing" id="clothing" accept="image/*" required>
+        </p>
+        <p>
+            <input type="submit" value="Upload and Process">
+        </p>
+    </form>
+    <div id="status"></div>
+
+    <script>
+    $(document).ready(function() {
+        $('#upload-form').on('submit', function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            
+            $.ajax({
+                url: '/',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                beforeSend: function() {
+                    $('#status').text('Uploading and processing... This may take a few minutes.');
+                },
+                success: function(response) {
+                    window.location.href = '/result';
+                },
+                error: function() {
+                    $('#status').text('An error occurred. Please try again.');
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>
